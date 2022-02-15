@@ -14,7 +14,7 @@ $favorite = new Favorite();
 // Check for room id
 $roomId = $_REQUEST['room_id'];
 if (empty($roomId)) {
-    header('Location: index.php');
+    // header('Location: index.php');
     
     return;
 }
@@ -22,7 +22,7 @@ if (empty($roomId)) {
 //Load room info
 $roomInfo = $room->get($roomId);
 if (empty($roomInfo)) {
-    header('Location: index.php');
+    // header('Location: index.php');
     
     return;
 }
@@ -95,17 +95,24 @@ $allReviews = $review->getReviewsByRoom($roomId);
                                     ?>
                                 </td>
                                     <div class="title-reviews" id="favorite">
-                                        <form name="favoriteForm" method="post" id="favoriteForm" class="favoriteForm" action="actions/favorite.php">
+                                        <form name="favoriteForm" method="post" id="favoriteForm" class="favoriteForm" action="/actions/favorite.php">
                                             <input type="hidden" name="room_id" value="<?php echo $roomId; ?>">
                                             <input type="hidden" name="is_favorite" value="<?php echo $isFavorite ? '1' : '0'; ?>">
                                             <div class="search_stars_div">
                                                 <ul class="fav_star">
                                                         <td>
+                                                            
                                                             <?php if ($isFavorite == 1) { ?>
+                                                            <?=  '11111' ?>
                                                             <i class="fas fa-heart"></i>
                                                             <input name="remove" id="RemButton" type="submit" value="Remove from Favorites">
                                                             <?php } ?>
+
+
+
                                                             <?php if ($isFavorite == 0) { ?>
+
+                                                                  <?=  '22222' ?>
                                                             <i class="far fa-heart"></i>
                                                             <input name="add" id="FavButton" type="submit" value="Add to Favorites"> 
                                                             <?php } ?>   

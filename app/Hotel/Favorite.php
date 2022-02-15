@@ -28,7 +28,7 @@ class Favorite extends BaseService
         return $this->execute('INSERT IGNORE INTO favorite (user_id, room_id) VALUES (:user_id, :room_id)', $parameters);    
     }
 
-    public function removeFavorite()
+    public function removeFavorite($roomId,  $userId)
     {
         //Prepare parameters
         $parameters = [
