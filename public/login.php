@@ -6,7 +6,7 @@ use Hotel\User;
 
 // Check for existing logged in user
 if (!empty(User::getCurrentUserId())) {
-    header('Location: /public/index.php');die;
+    // header('Location: /public/index.php');die;
 
 }
 

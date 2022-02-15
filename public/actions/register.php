@@ -7,7 +7,7 @@ use Hotel\User;
 
 // Return to home page if not a post request
 if (strtolower($_SERVER['REQUEST_METHOD']) != 'post') {
-    header('Location: /');
+    // header('Location: /');
 
     return;
 }
@@ -25,4 +25,4 @@ $token = $user->generateToken($userInfo['user_id']);
 setcookie('user_token', $token, time() + (30 * 24 * 60 * 60), '/');
 
 //Return to home page
-header('Location: /public/index.php');
+// header('Location: /public/index.php');

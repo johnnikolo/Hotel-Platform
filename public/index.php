@@ -1,6 +1,6 @@
 <?php 
 
-require __DIR__.'/../boot/boot.php';
+require __DIR__ . '/../boot/boot.php';
 
 
 use Hotel\User;
@@ -17,7 +17,7 @@ $allTypes = $type->getAllTypes();
 
 // Check for existing logged in user
 if (!empty(User::getCurrentUserId())) {
-    header('Location: /public/index.php');die;
+    // header('Location: /public/index.php');die;
 
 }
 
@@ -30,9 +30,10 @@ if (!empty(User::getCurrentUserId())) {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="robots" content="noindex,nofollow">
       <title>Room Search</title>
-      <script type="text/javascript" src="js/index_form.js"></script>
-      <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-      <link rel="stylesheet" href="/resources/demos/style.css">
+      <!-- <script type="text/javascript" src="/js/index_form.js"></script> -->
+      <script type="text/javascript" src="/js/index.js"></script>
+      <link rel="stylesheet" href="http://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+      <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
       <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
       <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
       <script>
@@ -105,7 +106,7 @@ if (!empty(User::getCurrentUserId())) {
       <footer>
           <p>CollegeLink 2022</p>
       </footer>
-      <link rel="stylesheet" href="assets/css/fontawesome.min.css">
-      <link rel="stylesheet" href="assets/css/styles.css">
+      <link rel="stylesheet" href="/assets/css/fontawesome.min.css">
+      <link rel="stylesheet" href="/assets/css/styles.css">
     </body>
 </html>

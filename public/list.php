@@ -44,9 +44,10 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="robots" content="noindex,nofollow">
       <title>Search Results</title>
-      <script type="text/javascript" src="js/list.js"></script>
+      <!-- <script type="text/javascript" src="js/list.js"></script> -->
       <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-      <link rel="stylesheet" href="/resources/demos/style.css">
+      <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+      <link rel="stylesheet" href="/assets/css/styles.css">
       <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
       <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
       <script>
@@ -213,6 +214,6 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
           <p>CollegeLink 2022</p>
       </footer>
       <link rel="stylesheet" href="assets/css/fontawesome.min.css">
-      <link rel="stylesheet" href="assets/css/styles.css">
+      <!-- <link rel="stylesheet" href="assets/css/styles.css"> -->
     </body>
 </html>
