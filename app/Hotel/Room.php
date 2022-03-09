@@ -32,7 +32,7 @@ class Room extends BaseService
         return $cities;
     }
 
-    public function search($checkInDate, $checkOutDate, $city = '', $typeId = '')
+    public function search($checkInDate, $checkOutDate, $city = '', $typeId = '', $minPrice = '', $maxPrice = '')
     {
         // Setup parameters
         $parameters = [
@@ -45,6 +45,12 @@ class Room extends BaseService
         if (!empty($typeId)){
             $parameters[':type_id'] = $typeId;
         }
+        if (!empty($minPrice)){
+            $parameters[':min_price'] = $minPrice;
+        }
+        if (!empty($maxPrice)){
+            $parameters[':max_price'] = $maxPrice;
+        }
 
         // Build query
         $sql = 'SELECT * FROM room WHERE ';
@@ -53,6 +59,12 @@ class Room extends BaseService
         }
         if (!empty($typeId)) {
             $sql .= 'type_id = :type_id AND ';
+        }
+        if (!empty($minPrice)) {
+            $sql .= 'price >= :min_price AND ';
+        }
+        if (!empty($maxPrice)) {
+            $sql .= 'price <= :max_price AND ';
         }
         $sql .= 'room_id NOT IN (
             SELECT room_id

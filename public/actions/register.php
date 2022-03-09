@@ -11,8 +11,13 @@ if (strtolower($_SERVER['REQUEST_METHOD']) != 'post') {
 
     return;
 }
+
 // Create new user
 $user = new User();
+
+if (!empty($user->getByEmail($_REQUEST['email']))) {
+    header('Location: /public/register.php?signup=empty');
+}
 $user->insert($_REQUEST['name'], $_REQUEST['email'], $_REQUEST['password']);
 
 //Retrieve user

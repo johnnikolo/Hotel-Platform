@@ -6,6 +6,7 @@ use Hotel\Room;
 use Hotel\Favorite;
 use Hotel\User;
 use Hotel\Review;
+use Hotel\Booking;
 
 // Initialize Room service
 $room = new Room();
@@ -40,6 +41,20 @@ $review = new Review();
 $allReviews = $review->getReviewsByRoom($roomId);
 // print_r($allReviews);die;
 
+//Check for booking room
+$checkInDate = $_REQUEST['check_in_date'];
+$checkOutDate = $_REQUEST['check_out_date'];
+$alreadyBooked = empty($checkInDate) || empty($checkOutDate);
+// $alreadyBooked = false;
+if (!$alreadyBooked) {
+    //Look for bookings
+    $booking = new Booking();
+    $alreadyBooked  = $booking->isBooked($roomId, $checkInDate, $checkOutDate);
+    // var_dump($alreadyBooked);die;
+}
+
+
+
 ?>
 <!DOCTYPE>
 <html>
@@ -48,10 +63,12 @@ $allReviews = $review->getReviewsByRoom($roomId);
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="robots" content="noindex,nofollow">
       <title>Room Page</title>
+      <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+      <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+      <!-- <script src="assets/pages/room.js"></script> -->
       <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-      <script src="./index.js"></script>
   </head>
-  <body>
+  <body class="overflow-fix">
       <header>
         <div class="container">
             <p class="main-logo">Hotels</p>
@@ -62,18 +79,32 @@ $allReviews = $review->getReviewsByRoom($roomId);
                       <i class="fas fa-home"></i>
                       Home
                     </a>
-                  </li>
+                  </li>                 
+                  <?php if (!empty(User::getCurrentUserId())) { ?>
                   <li>
                       <a href="profile.php">
                       <i class="fas fa-user-alt"></i>
                           Profile
                       </a>                    
                   </li>
+                  <?php } else { ?>
+                  <li>
+                      <a href="login.php">
+                      <i class="fas fa-user-alt"></i>
+                          Log-In
+                      </a>                    
+                  </li>
+                  <li style="color: #ff5500;">                   
+                    Or
+                      <a href="register.php">  Register
+                    </a>
+                  </li>     
+                 <?php }?> 
                 </ul>
             </div>
         </div>
       </header>
-      <main>
+      <main class="room-page-name">
             <div class="room-container room-centered" role="main">
                     <section class="room-title">
                         <table class="room-title-info" id="room-title-info">
@@ -84,7 +115,7 @@ $allReviews = $review->getReviewsByRoom($roomId);
                                     <?php
                                         $roomAvgReview = $roomInfo['avg_reviews'];
                                         for ($i = 1; $i <= 5; $i++){
-                                            if ($roomAvgReview > $i) {
+                                            if ($roomAvgReview >= $i) {
                                                 ?> <span class="fas fa-star"></span>
                                                 <?php                
                                             } else {
@@ -94,13 +125,14 @@ $allReviews = $review->getReviewsByRoom($roomId);
                                         }
                                     ?>
                                 </td>
+                                    <?php if (!empty($userId)) {    ?>
                                     <div class="title-reviews" id="favorite">
                                         <form name="favoriteForm" method="post" id="favoriteForm" class="favoriteForm" action="actions/favorite.php">
                                             <input type="hidden" name="room_id" value="<?php echo $roomId; ?>">
                                             <input type="hidden" name="is_favorite" value="<?php echo $isFavorite ? '1' : '0'; ?>">
                                             <div class="search_stars_div">
                                                 <ul class="fav_star">
-                                                        <td>
+                                                        <td id="ajaxtd">
                                                             <?php if ($isFavorite == 1) { ?>
                                                             <i class="fas fa-heart"></i>
                                                             <input name="remove" id="RemButton" type="submit" value="Remove from Favorites">
@@ -113,7 +145,8 @@ $allReviews = $review->getReviewsByRoom($roomId);
                                                 </ul>
                                             </div>
                                         </form>
-                                    </div>                    
+                                    </div>
+                                    <?php } ?>                    
                                 <td>Per Night: <?php echo $roomInfo['price']; ?>€</td>
                             </tr>                           
                         </table>                 
@@ -138,44 +171,78 @@ $allReviews = $review->getReviewsByRoom($roomId);
                             </tr>                           
                         </table>                 
                     </section>
-                    <section class="room-description">
-                        <section class="availability-buttons" style="float: right;">
-                            <form method="GET" action="book.php">
-                                <input id="BookButton" type="submit" value="Book Now">
-                            </form>
-                            <button type="button" id="already-booked">Already Booked</button>
-                        </section>
+                    <section class="room-description">                        
                         <h3><strong>Room Description</strong></h3>
                         <p><?php echo $roomInfo['description_long']; ?></p>
+                        <section class="availability-buttons">
+                            <?php if ($alreadyBooked) {  
+                            ?>
+                            <button type="button" id="already-booked">Already Booked</button>
+                            <?php
+                                  } else {
+                            ?>       
+                                <form method="post" action="actions/book.php">
+                                    <?php 
+                                        $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                                        if (strpos($fullUrl, "book=nouser") == true) {
+                                            echo "<p style='color: red;'>*You must be logged in to book a room!</p>";
+                                        }
+                                    
+                                    ?>                                
+                                    <input type="hidden" name="room_id" value="<?php echo $roomId;?>">
+                                    <input type="hidden" name="check_in_date" value="<?php echo $checkInDate;?>">
+                                    <input type="hidden" name="check_out_date" value="<?php echo $checkOutDate;?>">
+                                    <input name="" type="submit" value="Book Now" class="btn-primary">
+                                </form>
+                                <?php 
+                                     }
+                                ?>                               
+                        </section>
                     </section>
                     <!-- <div id="map"></div> -->
+                    <hr>
+                    <iframe width='100%' height='450px' src="https://api.mapbox.com/styles/v1/johnnikolo/ckzv6f1mn007z14jyci12cpvg.html?title=false&access_token=pk.eyJ1Ijoiam9obm5pa29sbyIsImEiOiJja3p1a3c4eGcxY2oxMndvOXp4d2ZtOXZiIn0.onsLFG01xXF5DmwxWqvW6w&zoomwheel=false#9/<?php echo $roomInfo['location_lat'];?>/<?php echo $roomInfo['location_long'];?>" title="Streets" style="border:none;"></iframe>
                     <hr>
                     <div class="caption">
                         <h3>Reviews</h3>
                         <br>
+                        <?php 
+                            foreach ($allReviews as $counter => $review) {
+                        ?>                   
                         <div class="room-reviews">
                             <h4>
-                                <span>1. John Doe</span>
+                                <span><?php echo sprintf('%d. %s', $counter + 1, $review['user_name']); ?></span>
                                 <div class="div-reviews">
-                                    <span class="fas fa-star"></span>
-                                    <span class="fas fa-star"></span>
-                                    <span class="fas fa-star"></span>
-                                    <span class="far fa-star"></span>
-                                    <span class="far fa-star"></span>
+                                    <?php                                      
+                                        for ($i = 1; $i <= 5; $i++){
+                                            if ($review['rate'] >= $i) {
+                                                ?> <span class="fas fa-star"></span>
+                                                <?php                
+                                            } else {
+                                                ?> <span class="far fa-star"></span>
+                                                <?php    
+                                            }
+                                        }
+                                    ?>
                                 </div>
                             </h4>
-                            <h5>Created at: 2022-01-01 13:32</h5>
-                            <p>Review Comment</p>
+                            <h5>Created at: <?php echo $review['created_time']?></h5>
+                            <p><?php echo htmlentities($review['comment']);?></p>
                         </div>
+                        <?php
+                        }
+                        ?>                    
+
                     </div>
                     <hr>
+                    <?php if (!empty($userId)) { ?>
                     <div class="caption caption-room">
                         <h3>Add Review</h3>
                         <br>
-                        <form name="reviewForm" method="post" action="actions/review.php">
-                            <input type="hidden" name="room_id" value="1">
+                        <form class= "reviewForm" name="reviewForm" method="post" action="actions/review.php">
+                            <input type="hidden" name="room_id" value="<?php echo $roomId?>">
                             <h4>
-                                <fieldset class="rating">
+                                <fieldset class="rating" required>
                                     <input type="radio" id="star5" name="rate" value="5"/><label for="star5" title="text">Awesome - 5 Stars</label>
                                     <input type="radio" id="star4" name="rate" value="4"/><label for="star4" title="text">Pretty good - 4 Stars</label>
                                     <input type="radio" id="star3" name="rate" value="3"/><label for="star3" title="text">Meh - 3 Stars</label>
@@ -186,17 +253,22 @@ $allReviews = $review->getReviewsByRoom($roomId);
                             <br>
                             <div class="floating-label-form-group controls">
                                 <textarea name="comment" id="reviewField" class="review-textarea" placeholder="Review" required></textarea>
-                                <input type="hidden" name="review" value="review">
                             </div>
                             <div class="form-group_landing">
-                                <button style="padding: 13px; border-radius: 10px;"type="submit">Submit</button>
+                                <button style="padding: 13px; border-radius: 10px;" type="submit">Submit</button>
                             </div>
                         </form>
                     </div>
+                    <?php } ?>
             </div>
       </main>
       <footer>
-          <p>CollegeLink 2022</p>
+        <p>CollegeLink
+        &copy
+        <script>
+            document.write(new Date().getFullYear());
+        </script> 
+        </p>
       </footer>
       <link rel="stylesheet" href="assets/css/fontawesome.min.css">
       <link rel="stylesheet" href="assets/css/styles.css">

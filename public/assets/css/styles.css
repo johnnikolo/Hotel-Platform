@@ -59,6 +59,7 @@ body {
   color: #000;
   font-family: 'RobotoL', sans-serif;
   font-weight: 300;
+
 }
 
 a {
@@ -112,14 +113,14 @@ h6 {
 }
 
 body > main {
-    margin: 200px 0 0 0;
+    margin: 40px 0 0 0;
+    height: 100%;
 }
 
 body > footer {
   background: #ccc;
   border-top: 3px solid #808080;
   color: #616161;
-  position:fixed;
   bottom:0;
   width: 100%;
 
@@ -177,18 +178,23 @@ body> header.main-logo {
 
 /* HOMEPAGE */
 body section.hero {
-  padding: 0px 0 60px 0;
+    display: grid;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    background: url(../images/cover/cover4.jpg) no-repeat center center;
+    background-size: cover;
 }
 
       section.hero form{
           background: #fff;
-          width: 30%;
-          margin: 0 auto;
+          /* width: 30%; */
+          /* margin: 0 auto; */
           box-sizing: border-box;
           padding: 25px;
           border-radius: 12px;
           position: relative;
-          top: -76px;
+          
       }
 
       body section.hero h1{
@@ -297,6 +303,8 @@ aside form input[type="submit"] {
       width: 100%;
   }
 
+
+
   aside.hotel-search,
   section.hotel-list {
     width: 90%;
@@ -305,13 +313,20 @@ aside form input[type="submit"] {
   }
 
     section.hero form {
-      width: 80%;
+      width: 99%;
     }
 
     section.hero form input,
     section.hero form select,
     section.hero form textarea {
-      width: 100%;
+      width: 55%;
+     
+    }
+    textarea#reviewField {
+        width: 95%;
+    }
+    mapboxgl-canvas {
+        width: 95%;
     }
   }
 
@@ -357,10 +372,6 @@ aside form input[type="submit"] {
     line-height: 16px;
     font-family: 'RobotoL';
     border-radius: 6px;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     margin-top: 20px;
  }
 
@@ -398,7 +409,6 @@ aside.hotel-search {
 .search-container {
   display:flex;
   justify-content: center;
-  margin-top: -115px;
   font-family: 'RobotoL', sans-serif;
   font-weight: 300;
 }
@@ -450,6 +460,11 @@ margin-top: 10px;
   padding-left: 10px;
   }
 
+  #property-info td:nth-child(2) {
+    border-right: solid 3px rgb(68, 61, 61);
+    padding-right: 10px;
+    }
+
   #property-info td {
     padding-inline: 5px;
   }  
@@ -497,10 +512,8 @@ margin-top: 10px;
 }
 
 .room-centered {
-  position: absolute;
-  top: 55%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+
 }
 
 table.room-title-info tr td {
@@ -509,7 +522,7 @@ table.room-title-info tr td {
 
 #room-title-info {
 
-  width: 110%;
+  width: 100%;
   display: table;
   color: #fff;
   background-color: #ff5500;
@@ -526,7 +539,7 @@ table.room-title-info tr td {
 
   #room-tags-info {
 
-    width: 110%;
+    width: 90%;
     display: table;
     color: #fff;
     background-color: #ff5500;
@@ -671,7 +684,66 @@ table.room-title-info tr td {
       border-radius: 10px;
     }
 
-    #RemButton:hover 
-    {
+    #RemButton:hover {
       background: #a20d01;
+    }
+
+    .hide {
+      display:none;
+    }
+
+    .show
+    {
+      display:block;
+    }
+
+    .display-flex-center {
+      display: flex;
+      flex-direction: column;
+      JUSTIFY-CONTENT: center;
+      ALIGN-CONTENT: center;
+      ALIGN-ITEMS: center;
+    }
+
+    .room-search {
+      height: calc( 100vh - 38px - 48px );
+      background: url(../images/cover/cover3.jpg) no-repeat center center;
+      background-size: cover;
+    }
+
+    /* body.room-search {
+      background: url(assets/images/cover/cover.jpg) no-repeat center center;
+      background-size: cover;
+      padding: 155px 0 300px 0;  
+    } */
+
+    .search-results{
+      min-height: calc( 100vh - 48px - 48px );
+      padding-top: 50px;
+      
+    }
+    .room-page-name {
+      margin: 40px 0 0 0;
+      height: auto;
+    }
+
+    .overflow-fix {
+      overflow-x: hidden;
+    }
+
+    .btn-primary {
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin: 10px 0 ;
+    }
+
+    #submitButton {
+      border-radius: 10px;
+    }
+
+    .fixing-css {
+      overflow: hidden;
+}
+    .main-content {
+      height: calc( 100vh - 38px - 48px );
     }

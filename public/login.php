@@ -14,7 +14,7 @@ session_start();
 
 ?>
 
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
   <head>
       <meta charset="UTF-8">
@@ -22,7 +22,7 @@ session_start();
       <meta name="robots" content="noindex,nofollow">
       <title>Log In</title>
   </head>
-  <body>
+  <body class="fixing-css">
       <header>
         <div class="container">
             <p class="main-logo">Hotels</p>
@@ -34,6 +34,11 @@ session_start();
                       Home
                     </a>
                   </li>
+                  <li style="color: #ff5500;">                                        
+                      Don't have an account? <i class="fas fa-user-alt"></i>
+                       <a href="register.php"> Register now!
+                    </a>
+                  </li>
                 </ul>
             </div>
         </div>
@@ -41,9 +46,13 @@ session_start();
       <main class="main-content view_hotel page-home">
         <section class="hero">      
           <form method="post" action="actions/login.php">
-            <?php if (!empty($GET['error'])) { ?>
-            <div class="alert alert-danger alert-styled-left">Login Error</div>
-            <?php } ?>  
+            <?php 
+            $fullUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            if (strpos($fullUrl, "login=false") == true) {
+                echo "<p style='color: red;'>*Wrong email or password!</p>";
+            }
+            
+            ?> 
             <fieldset class="introduction" id="form-introduction">
                  
                   <div class="form-group">
@@ -72,7 +81,12 @@ session_start();
         </section>
       </main>
       <footer>
-          <p>CollegeLink 2022</p>
+        <p>CollegeLink
+        &copy
+        <script>
+            document.write(new Date().getFullYear());
+        </script> 
+        </p>
       </footer>
       <link rel="stylesheet" href="assets/css/fontawesome.min.css">
       <link rel="stylesheet" href="assets/css/styles.css">

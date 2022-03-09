@@ -1,7 +1,7 @@
 <?php
 
 use Hotel\User;
-use Hotel\Favorite;
+use Hotel\Review;
 
 // Boot application
 require_once __DIR__ . '/../../boot/boot.php';
@@ -28,18 +28,10 @@ if (empty($roomId)) {
     return;
 }
 
-// Set room to favorites
-$favorite = new Favorite();
+// Add review
+$review = new Review();
+$review->insert($roomId, User::getCurrentUserId(), $_REQUEST['rate'], $_REQUEST['comment']);
 
-// Add or remove room from favorites****
-$test = $favorite->isFavorite($roomId, User::getCurrentUserId());
-// var_dump($test);die;
-
-if ($test == false) {
-    $favorite->addFavorite($roomId, User::getCurrentUserId());
-} else {   
-    $favorite->removeFavorite($roomId, User::getCurrentUserId());
-}
 
 // Return to room page
 header('Location: ' . $_SERVER['HTTP_REFERER']);

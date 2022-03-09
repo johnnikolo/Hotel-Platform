@@ -3,23 +3,19 @@
 // Boot application
 require_once __DIR__ . '/../../boot/boot.php';
 
-use App\Hotel\User;
-
+use Hotel\User;
 // Return to home page if not a post request
 if (strtolower($_SERVER['REQUEST_METHOD']) != 'post') {
     header('Location: /');
 
     return;
 }
-
 // if there is an already logged in user, return to main page
 if (!empty(User::getCurrentUserId())) {
     header('Location: /');
 
     return;
 }
-
-$error = "Your username/password is incorrect";
 
 //Create new user
 $user = new User();
@@ -31,10 +27,8 @@ $verification = $user->verify($_REQUEST['email'], $_REQUEST['password']);
 $userInfo = $user->getByEmail($_REQUEST['email']);
 
 
-
-if(empty($verification)) {
-    $_SESSION["error"] = $error;
-    header('Location: /public/login.php');die;
+if(empty($verification)) {   
+    header('Location: /public/login.php?login=false');die;
 }
 
 //Generate token

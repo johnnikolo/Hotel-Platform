@@ -6,6 +6,18 @@ use Hotel\BaseService;
 
 class Favorite extends BaseService
 {
+    public function getListByUser($userId) 
+    {
+        $parameters = [
+            ':user_id' => $userId,
+        ];
+        return $this->fetchAll('SELECT favorite.*, room.name 
+            FROM favorite 
+            INNER JOIN room ON favorite.room_id = room.room_id
+            WHERE user_id = :user_id', $parameters);
+
+    }
+    
     public function isFavorite($roomId, $userId)
     {      
         $parameters = [
@@ -25,10 +37,10 @@ class Favorite extends BaseService
         ':user_id' => $userId,
         ]; 
     
-        return $this->execute('INSERT IGNORE INTO favorite (user_id, room_id) VALUES (:user_id, :room_id)', $parameters);    
+        return $this->execute('INSERT IGNORE INTO favorite (room_id, user_id) VALUES (  :room_id, :user_id)', $parameters);    
     }
 
-    public function removeFavorite()
+    public function removeFavorite($roomId, $userId)
     {
         //Prepare parameters
         $parameters = [

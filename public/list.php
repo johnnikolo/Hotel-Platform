@@ -4,6 +4,7 @@ require __DIR__. '/../boot/boot.php';
 
 use Hotel\Room;
 use Hotel\RoomType;
+use Hotel\User;
 
 // use Hotel\User;
 
@@ -44,11 +45,12 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="robots" content="noindex,nofollow">
       <title>Search Results</title>
-      <script type="text/javascript" src="js/list.js"></script>
+      <script type="text/javascript" src="/js/list.js"></script>
       <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
       <link rel="stylesheet" href="/resources/demos/style.css">
       <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
       <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+      <script src="assets/pages/search.js"></script>
       <script>
           $(document).ready(function () {
                 var date = new Date();
@@ -79,12 +81,26 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
                       Home
                     </a>
                   </li>
+                  <?php if (!empty(User::getCurrentUserId())) { ?>
                   <li>
                       <a href="profile.php">
                       <i class="fas fa-user-alt"></i>
                           Profile
                       </a>                    
                   </li>
+                  <?php } else { ?>
+                  <li>
+                      <a href="login.php">
+                      <i class="fas fa-user-alt"></i>
+                          Log-In
+                      </a>                    
+                  </li>
+                  <li style="color: #ff5500;">                   
+                    Or
+                      <a href="register.php">  Register
+                    </a>
+                  </li>     
+                 <?php }?> 
                 </ul>
             </div>
         </div>
@@ -92,15 +108,21 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
             <main class="search-results">
                 <div class="search-container">
                     <aside class="hotel-search box">
-                        <form method="GET" action="list.php">
+                        <form class="searchForm" method="GET" action="list.php">
                                 <select name="count_of_guests" style="padding: 20px; background:#D3D3D3; color:#ffffff; border:none; border-radius: 20px; font-family: 'RobotoL'; font-size: 18px;">
-                                    <option value="<?php echo $selectedCity;?>"> 
-                                    <?php 
-                                        if (empty($selectedCountofGuests))
-                                            echo "Count of Guests";
-                                        else
-                                            echo $selectedCountofGuests;   
-                                    ?>
+                                    <option value="<?php 
+                                                        if (empty($selectedCountofGuests)) {
+                                                            echo ("");
+                                                        } else {
+                                                            echo $selectedCountofGuests; 
+                                                        }  
+                                                    ?>"><?php 
+                                                        if (empty($selectedCountofGuests)) {
+                                                            echo ("Count of Guests");
+                                                        } else {
+                                                            echo $selectedCountofGuests; 
+                                                        }  
+                                                    ?>                              
                                     </option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -158,7 +180,7 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
                             </div>
                         </form>
                     </aside>
-                    <section class="hotel-list box">
+                    <section class="hotel-list box" id= "search-results-container">
                         <header class="page-title">
                             <h2>Search Results</h2>
                         </header>
@@ -174,8 +196,8 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
                                 <h1><?php echo $availableRoom[city]; ?>, <?php echo $availableRoom[area]; ?></h1>
                                 <p><?php echo $availableRoom[description_short]; ?></p>
                                 <div class="text-right">
-                                    <button type="button" name="button">
-                                        <a href="room.php">Go to room page</a>
+                                    <button type="button" name="button" class="btn-primary">
+                                        <a href="room.php?room_id=<?php echo $availableRoom[room_id];?>&check_in_date=<?php echo $checkInDate;?>&check_out_date=<?php echo $checkOutDate;?>">Go to room page</a>
                                     </button>
                                 </div>
                                 <table class="property-info" id="property-info">
@@ -198,6 +220,7 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
                                 </table>
                             </main>
                             <div class="clear"></div>
+                            <hr>
                             <?php
                                  } 
                             ?>
@@ -210,7 +233,12 @@ $allAvailableRooms = $room->search(new DateTime($checkInDate), new DateTime($che
                 </div>
             </main>
       <footer>
-          <p>CollegeLink 2022</p>
+   <p>CollegeLink
+   &copy
+   <script>
+      document.write(new Date().getFullYear());
+   </script> 
+   </p>
       </footer>
       <link rel="stylesheet" href="assets/css/fontawesome.min.css">
       <link rel="stylesheet" href="assets/css/styles.css">
