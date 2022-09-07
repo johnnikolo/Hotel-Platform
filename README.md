@@ -13,5 +13,5 @@ The user can browse through all the Rooms, search for available rooms at a speci
 Technologies utilized:
 
 PHP
-Javascript (with AJAX calls)
+Javascript 
 HTML/CSS
